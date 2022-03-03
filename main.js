@@ -78,7 +78,8 @@ console.log('---------------------------------------');
 console.log(' ');
 console.log('The Time is ' + chalk.cyan('5:00') +' am. Your boat has just arrived at the fishing spot...');
 console.log(' ');
-console.log('You have the option to chum the water before you begin fishing, this will take 30 mins but will increase your chances of catching more frequently');
+console.log(' ');
+console.log('You have the option to chum the water before you begin fishing, this will take 30 mins but will increase your chances of catching more frequently.');
 console.log(' ');
 let chumAnswer = prompt('Would you like to chum the water? Type' +chalk.green(' [yes]') + ' or' + chalk.red(' [no]') + ': ' ); 
 console.log(' ');
@@ -89,8 +90,8 @@ if (chumAnswer === 'yes'){
     time += Number(30);
     console.log("The time is now " + chalk.cyan('5:30') + ' am.');
     console.log(' '); 
-    console.log('The water is now chummed!');
-    console.log(' ');} else
+    console.log('The water is chummed and ready!');
+    console.log(' ');} 
 
 console.log(prompt('Hit ' + chalk.green('[enter]') + ' again to start casting...' ))
 
@@ -120,17 +121,17 @@ while (time < 360) {
 
     if (randomFish.value > 0.5 && randomFish.value < 1 && totalCatchWeight < 10){
         randomFish.name = 'Golden Doubloon';
-        randomFish.value = Number(randomFish.value * 150);
+        randomFish.value = Number(randomFish.value * 100);
         randomFish.weight = Number(Math.random() * (10 - totalCatchWeight));
     }
 
     if (randomFish.value < 0.5){
-        randomFish.name = 'Boot'; 
+        randomFish.name = 'Leather Boot'; 
         randomFish.value = 0;
         randomFish.weight = 0;
     }
 
-    console.log('You just caught an ' + chalk.magenta(randomFish.name) + ' weighing ' + chalk.yellow(randomFish.weight.toFixed(2)) + 'lbs, worth a value of $' + chalk.yellow(randomFish.value.toFixed(2)))
+    console.log('You just caught a ' + chalk.magenta(randomFish.name) + ' weighing ' + chalk.yellow(randomFish.weight.toFixed(2)) + 'lbs, worth a value of $' + chalk.yellow(randomFish.value.toFixed(2)))
 
     if (totalCatchWeight + randomFish.weight > 10) {
 
