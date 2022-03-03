@@ -1,6 +1,8 @@
 const prompt = require('prompt-sync')({sigint: true});
 const chalk = require('chalk');
 
+// Function to compile randomly generated fish names, weight, and value
+
 function generateRandomFish(){
 
     let name = generateRandomFishName();
@@ -14,6 +16,8 @@ function generateRandomFish(){
     }
 }
 
+// Function to randomly generate fish name
+
 function generateRandomFishName(){
     
     let fishAdj1 = ['Californian', 'South African', 'Chilean', 'Great', 'King', 'Southern', 'Northern', 'Pacific', 'Atlantic', 'Arctic', 'Giant', 'Cape'];
@@ -22,6 +26,8 @@ function generateRandomFishName(){
 
     return (fishAdj1[Math.floor(Math.random() * fishAdj1.length)]) + ' ' + (fishAdj2[Math.floor(Math.random() * fishAdj2.length)]) + ' ' + (fishType[Math.floor(Math.random() * fishType.length)])
 }
+
+// Function to randomly generate fish weight ** if/else statements used to increase the probability of lower weights based on increasing sum of total catch weight
 
 function generateRandomFishWeight(){
 
@@ -38,8 +44,10 @@ function generateRandomFishWeight(){
         return Number((Math.random() * 8).toFixed(2))
     } else
     
-    return Number((Math.random() * 9).toFixed(2)) 
+    return Number((Math.random() * 9).toFixed(2)) // standard random fish weight generator, not adjusted for total catch weight
 }
+
+// Function to randomly generate fish value ** if/else statements used to decrease the potential values, to correlate to tuned/diminishing weights, based on incremental sum of total catch weight
 
 function generateRandomFishValue(){
 
@@ -56,8 +64,10 @@ function generateRandomFishValue(){
         return Number((Math.random() * 18).toFixed(2))
     } else
 
-    return Number((Math.random() * 20).toFixed(2))
+    return Number((Math.random() * 20).toFixed(2)) // standard random fish value generator, not adjusted for total catch weight
 }
+
+// Declaring variables
 
 let catchNum = 0;
 let caughtFish = [];
@@ -67,10 +77,12 @@ let time = 0;
 let hour = 0;
 let min = 0;
 
-console.log(' ')
+// Intro
+
+console.log(' ');
 console.log(chalk.bgBlue.bold("    Welcome to The Fishing Simulator!    "));
 console.log(' ');
-console.log("The goal is to try and maximize the value of your catch. The rules are: you can only fish for " + chalk.underline('six hours') + ", and can catch at most " + chalk.underline('10 lbs') + " of fish.")
+console.log("The goal is to try and maximize the value of your catch. The rules are: you can only fish for " + chalk.underline('six hours') + ", and can catch at most " + chalk.underline('10 lbs') + " of fish.");
 console.log(' ');
 console.log(prompt('Ready? Lets go! Hit ' + chalk.green('[enter]') + ' to head out fishing...' ));
 console.log(' ');
@@ -79,6 +91,9 @@ console.log(' ');
 console.log('The Time is ' + chalk.cyan('5:00') +' am. Your boat has just arrived at the fishing spot...');
 console.log(' ');
 console.log(' ');
+
+// Prompt for chum the water
+
 console.log('You have the option to chum the water before you begin fishing, this will take 30 mins but will increase your chances of catching more frequently.');
 console.log(' ');
 let chumAnswer = prompt('Would you like to chum the water? Type' +chalk.green(' [yes]') + ' or' + chalk.red(' [no]') + ': ' ); 
@@ -86,19 +101,26 @@ console.log(' ');
 console.log('---------------------------------------');
 console.log(' ');
 
+// if statement for adjusting for chum = yes
+
 if (chumAnswer === 'yes'){
     time += Number(30);
     console.log("The time is now " + chalk.cyan('5:30') + ' am.');
     console.log(' '); 
     console.log('The water is chummed and ready!');
-    console.log(' ');} 
+    console.log(' ');
+} 
 
 console.log(prompt('Hit ' + chalk.green('[enter]') + ' again to start casting...' ))
 
+// Out fishing for 6 hours loop
+
 while (time < 360) {
 
-    console.log('---------------------------------------')
-    console.log(' ')
+    console.log('---------------------------------------');
+    console.log(' ');
+
+    // conditional for adjusting time intervals between catches, based on chum = 'yes'
 
     if (chumAnswer === 'yes'){
         time += Number(15 + Math.floor(Math.random() * 30));
@@ -106,18 +128,28 @@ while (time < 360) {
         time += Number(15 + Math.floor(Math.random() * 60));
     }
 
+    // Defining hour and minute calculations based on total time
+
     hour = 5 + Math.floor(time/60);
     min = time % 60;
 
+    // Adjustment to add '0' to minutes displayed, so time is always displayed as hh:mm , even when min = to single digit value
+
     if (min < 10) {min = "0" + min;};
+
+    // Time, and catch summary
 
     console.log("The time is now " + chalk.cyan(hour + ':' + min) + ' am.');
     console.log(' ');
-    console.log("So far you've caught:")
+    console.log("So far you've caught:");
     console.log(chalk.blue(catchNum) + ' fish, with a total weight of ' + chalk.blue(totalCatchWeight.toFixed(2)) + ' lbs, worth a total value of $' + chalk.green(totalCatchValue.toFixed(2)));
     console.log(' ');
 
+    // Pull new randomly generated fish per loop
+
     let randomFish = generateRandomFish()
+
+    // Conditions for Golden Doubloon & Leather Boot occurence
 
     if (randomFish.value > 0.5 && randomFish.value < 1 && totalCatchWeight < 10){
         randomFish.name = 'Golden Doubloon';
@@ -131,7 +163,11 @@ while (time < 360) {
         randomFish.weight = 0;
     }
 
-    console.log('You just caught a ' + chalk.magenta(randomFish.name) + ' weighing ' + chalk.yellow(randomFish.weight.toFixed(2)) + 'lbs, worth a value of $' + chalk.yellow(randomFish.value.toFixed(2)))
+    // New catch!
+
+    console.log('You just caught a ' + chalk.magenta(randomFish.name) + ' weighing ' + chalk.yellow(randomFish.weight.toFixed(2)) + 'lbs, worth a value of $' + chalk.yellow(randomFish.value.toFixed(2)));
+
+    // Conditional check to see if the catch will exceed 10lb limit
 
     if (totalCatchWeight + randomFish.weight > 10) {
 
@@ -140,44 +176,62 @@ while (time < 360) {
         console.log(' ');
         console.log(prompt('Press ' + chalk.green('[enter]') + ' to continue fishing ' ));
         console.log(' ');
+
     } else {
 
-    console.log(' ')
-    catchReleasePrompt = prompt('Your action: [c]atch or [r]elease? ' )
-    console.log(' ')
+        // Catch / Release prompt +
 
-    if (catchReleasePrompt === 'c'){
+        console.log(' ');
+        catchReleasePrompt = prompt('Your action: [c]atch or [r]elease? ' );
+        console.log(' ');
 
-        caughtFish.push(randomFish);
+        // Pushing catch into array if 'caught', and updating total catch weight, total catch value, and total catch number variables 
 
-        totalCatchWeight += Number(randomFish.weight.toFixed(2));
-        totalCatchValue += Number(randomFish.value.toFixed(2));
-        catchNum = caughtFish.length;
+        if (catchReleasePrompt === 'c'){
+
+            caughtFish.push(randomFish);
+
+            totalCatchWeight += Number(randomFish.weight.toFixed(2));
+            totalCatchValue += Number(randomFish.value.toFixed(2));
+            catchNum = caughtFish.length;
 
     }
     }
 
 }
-console.log('-----------------------------------------------')
-console.log(' ')
-console.log(chalk.cyan.bold("** Time's up! Lets see what you reeled in! **"))
+
+// Outro: Final summary
+
+console.log('-----------------------------------------------');
+console.log(' ');
+console.log(chalk.cyan.bold("** Time's up! Lets see what you reeled in! **"));
 console.log(' ');
 console.log('You caught ' + chalk.blue(catchNum) + ' fish, with a total weight of ' + chalk.blue(totalCatchWeight.toFixed(2)) + ' lbs, worth a total value of $' + chalk.green(totalCatchValue.toFixed(2)));
 console.log(' ');
 console.log('You can see a breakdown of your catch here:');
 console.log(' ');
 
+// Printing out full catch-list breakdown with values
+
 for (i = 0; i < caughtFish.length; i++){
-console.log((i+1) + '. ' + chalk.magenta(caughtFish[i].name) + ', Weight: ' + chalk.yellow(caughtFish[i].weight.toFixed(2)) + 'lbs, Value: $' + chalk.yellow(caughtFish[i].value.toFixed(2) ));
+
+    console.log((i+1) + '. ' + chalk.magenta(caughtFish[i].name) + ', Weight: ' + chalk.yellow(caughtFish[i].weight.toFixed(2)) + 'lbs, Value: $' + chalk.yellow(caughtFish[i].value.toFixed(2) ));
 }
 
 console.log(' ');
 
-if (totalCatchValue > 50){
-console.log(`${chalk.bold("Congratulations!")} You my friend... have just${chalk.bold(' SECURED THE BAG!')} Dont foget to come back again soon!`)}
+// conditional farewell dependent on how high total catch value is
 
-else {console.log(chalk.bold("Well done! ") + "Get yo' money, and keep on fishing!")}
+if (totalCatchValue > 50){
+
+    console.log(`${chalk.bold("Congratulations!")} You my friend... have just${chalk.bold(' SECURED THE BAG!')} Dont foget to come back again soon!`);
+    }
+
+else {
+
+        console.log(chalk.bold("Well done! ") + "Get yo' money, and keep on fishing!");
+    }
 
 console.log(' ');
-console.log('Skipper Fergus signing out...')
+console.log('Skipper Fergus signing out...') // Peace out
 console.log('-----------------------------------------------')
