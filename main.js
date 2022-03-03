@@ -173,7 +173,7 @@ console.log((i+1) + '. ' + chalk.magenta(caughtFish[i].name) + ', Weight: ' + ch
 console.log(' ');
 
 if (totalCatchValue > 50){
-console.log(chalk.bold("Congratulations!") + " You my friend... have just" + chalk.bold(' SECURED THE BAG!') + " Dont foget to come back again soon!")}
+console.log(`${chalk.bold("Congratulations!")} You my friend... have just${chalk.bold(' SECURED THE BAG!')} Dont foget to come back again soon!`)}
 
 else {console.log(chalk.bold("Well done! ") + "Get yo' money, and keep on fishing!")}
 
